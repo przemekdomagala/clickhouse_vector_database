@@ -1,4 +1,4 @@
-# clickhouse_vector_database — group12
+# clickhouse_vector_database - group12
 
 Vector search benchmark on **ClickHouse**, following the *Common Baseline for the Vector Database Project*.
 
@@ -54,9 +54,9 @@ benchmark time.
 
 Two containers, as in section 2 of the baseline:
 
-- **db** — ClickHouse server. Mounts `/data` read-only (all dataset files) and keeps the database in `/db`
+- **db** - ClickHouse server. Mounts `/data` read-only (all dataset files) and keeps the database in `/db`
   (named volume `db_data`). ClickHouse reads the dataset CSVs itself through `file('data/...')`.
-- **client** — the `populate` and `benchmark` services (same image, Python scripts). They talk to ClickHouse over
+- **client** - the `populate` and `benchmark` services (same image, Python scripts). They talk to ClickHouse over
   HTTP (port 8123), write CSVs to `/results`, and share the db container's PID namespace so the database's RSS can
   be sampled with `psutil`.
 
@@ -76,7 +76,7 @@ One MergeTree table per dataset, DDL in [`sql/ddl.sql`](sql/ddl.sql) in two mark
 
 1. **Schema** (before loading): `id UInt64` (0-based row position), `vector Array(Float32)` with a
    `length(vector) = d` constraint.
-2. **Index** (after loading): `vector_similarity('hnsw', 'cosineDistance', d, 'f32', 32, 128)` — HNSW with f32
+2. **Index** (after loading): `vector_similarity('hnsw', 'cosineDistance', d, 'f32', 32, 128)` - HNSW with f32
    vectors, M = 32, ef_construction = 128, granularity large enough for one index per part.
 
 ## Populate
