@@ -1,0 +1,6 @@
+group,system,version,dataset,ingest_s,index_s,index_type,db_mb,index_mb,peak_mem_mb,cpu,cores,ram_gb,date,kmeans_s
+group12,clickhouse,26.10.9.12,cohere-small-100k,5.01,55.25,"hnsw(f32,M=32,ef_c=128)",545.6,275.4,1819.8,AMD Ryzen 7 7840HS with Radeon 780M Graphics,4,5.0,2026-11-22,
+group12,clickhouse,26.10.9.12,nytimes-256-angular,4.69,168.91,"hnsw(f32,M=32,ef_c=128)",557.1,295.2,1266.4,AMD Ryzen 7 7840HS with Radeon 780M Graphics,4,5.0,2026-11-22,
+group12,clickhouse,26.10.9.12,glove-200-angular,31.26,722.5,"hnsw(f32,M=32,ef_c=128)",1812.2,972.9,2495.3,AMD Ryzen 7 7840HS with Radeon 780M Graphics,4,5.0,2026-11-22,
+group12,clickhouse,26.10.9.12,pubmed-arxiv,31.51,243.55,"hnsw(f32,M=32,ef_c=128)",2204.8,1116.5,3506.8,AMD Ryzen 7 7840HS with Radeon 780M Graphics,4,5.0,2026-11-22,
+group12,clickhouse,26.10.9.12,ccnews-nomic-768-normalized,43.12,315.43,"hnsw(f32,M=32,ef_c=128)",2730.7,1383.8,3512.0,AMD Ryzen 7 7840HS with Radeon 780M Graphics,4,5.0,2026-11-22,
