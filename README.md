@@ -122,6 +122,9 @@ Override with `SETTINGS`, `REPEATS` and `WARMUP`, e.g. `SETTINGS=64,256,exact`.
 - One HNSW index per data part. Merges rebuild it, so the table is merged to one part before the index is built.
 - `hnsw_candidate_list_size_for_search` below `k` appears to behave like `k`: on cohere, k = 100 gives the same
   recall at ef 16 and 64, so k = 100 sweeps need ef values above 100.
-- Index build is CPU-heavy (M = 32): about 55 s for cohere and 170 s for nytimes on 4 cores.
+- Index build is CPU-heavy (M = 32): on 4 cores it took 55 s (cohere), 169 s (nytimes), 244 s (pubmed),
+  315 s (ccnews) and 723 s (glove).
+- With M = 32 / ef_construction = 128, ef_search up to 256 does not reach recall@10 = 0.95 on nytimes (0.93) and
+  glove (0.87); those need larger ef_search or M (M5 tuning).
 - The whole index must be in memory to search. The vector index cache defaults to 5 GB, which matters with a
   12 GB container on the larger datasets.
