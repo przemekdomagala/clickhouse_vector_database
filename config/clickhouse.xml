@@ -1,0 +1,12 @@
+<clickhouse>
+    <path>/db/</path>
+    <tmp_path>/db/tmp/</tmp_path>
+    <format_schema_path>/db/format_schemas/</format_schema_path>
+    <!-- dataset files are read server-side with file('data/...'); data -> /data is a symlink, so the
+         image entrypoint never tries to chown the read-only /data mount -->
+    <user_files_path>/srv/user_files/</user_files_path>
+    <logger>
+        <level>warning</level>
+        <console>1</console>
+    </logger>
+</clickhouse>

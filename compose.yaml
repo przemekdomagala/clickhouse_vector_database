@@ -1,0 +1,65 @@
+# Defaults are the course-server limits (section 2 of the baseline).
+# For a smaller machine, copy .env.example to .env and lower them there.
+
+x-image: &image
+  build: .
+  image: group12-clickhouse-vector:latest
+
+x-client: &client
+  <<: *image
+  entrypoint: []
+  # share the db container's PID namespace so peak RSS of the database can be sampled with psutil
+  pid: "service:db"
+  cpuset: "${CLIENT_CPUSET:-4}"
+  mem_limit: "${CLIENT_MEM:-2g}"
+  memswap_limit: "${CLIENT_MEM:-2g}"
+  environment:
+    CH_HOST: db
+    GROUP: group12
+    DATASET: "${DATASET:-cohere-small-100k}"
+    SETTINGS:
+    REPEATS:
+    WARMUP:
+  volumes:
+    - "${RESULTS_DIR:-./results}:/results"
+  depends_on:
+    db:
+      condition: service_healthy
+
+services:
+  db:
+    <<: *image
+    cpuset: "${DB_CPUSET:-0-3}"
+    mem_limit: "${DB_MEM:-12g}"
+    memswap_limit: "${DB_MEM:-12g}"
+    ulimits:
+      nofile: { soft: 262144, hard: 262144 }
+    volumes:
+      - "${DATA_DIR:-./data}:/data:ro"
+      - db_data:/db
+    healthcheck:
+      test: ["CMD", "clickhouse-client", "-q", "SELECT 1"]
+      interval: 2s
+      timeout: 5s
+      retries: 60
+
+  populate:
+    <<: *client
+    command: ["python3", "/app/scripts/populate.py"]
+
+  benchmark:
+    <<: *client
+    command: ["db"]
+
+  # Only needed off the course server, where the dataset files are not present yet.
+  download:
+    <<: *image
+    entrypoint: []
+    command: ["python3", "/app/scripts/download.py"]
+    environment:
+      DATASET: "${DATASET:-cohere-small-100k}"
+    volumes:
+      - "${DATA_DIR:-./data}:/data"
+
+volumes:
+  db_data:
